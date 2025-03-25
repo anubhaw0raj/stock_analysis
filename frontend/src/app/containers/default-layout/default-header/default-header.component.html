@@ -1,0 +1,34 @@
+<ng-container>
+  <c-container [fluid]="true">
+    <c-header-nav class="d-none d-lg-flex me-auto">
+      <c-nav-item>
+        <a cNavLink routerLink="/dashboard" routerLinkActive="active">
+          Stock Market Price Analysis App
+        </a>
+      </c-nav-item>
+    </c-header-nav>
+
+    <c-header-nav class="d-none d-lg-flex">
+      <c-nav-item>
+        <a cNavLink routerLink="/closeprice" routerLinkActive="active">
+          Close Prices For A Period
+        </a>
+      </c-nav-item>
+      <c-nav-item>
+        <a cNavLink routerLink="/date" routerLinkActive="active">
+          Multiple Stocks For A Date
+        </a>
+      </c-nav-item>
+      <c-nav-item>
+        <a cNavLink routerLink="/highlow" routerLinkActive="active">
+          High Low For a Period
+        </a>
+      </c-nav-item>
+    </c-header-nav>
+
+  </c-container>
+  <c-header-divider></c-header-divider>
+  <c-container [fluid]="true">
+    <c-breadcrumb-router class="ms-2"></c-breadcrumb-router>
+  </c-container>
+</ng-container>

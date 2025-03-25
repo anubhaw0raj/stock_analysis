@@ -1,0 +1,76 @@
+<c-row>
+  <c-col xs>
+    <c-card class="mb-4">
+      <c-card-header class="display-6">Hello There</c-card-header>
+      <c-card-body>
+       <div>
+        This is a stock market analysis app. NSE Data is available for {{ start_date }} to {{ end_date}}. <br>
+        Choose one of the below option for stock analysis.
+       </div>
+      </c-card-body>              
+    </c-card>
+  </c-col>
+</c-row>
+
+<c-row>
+  <c-col xs>
+    <c-card class="mb-4">
+      <c-card-header> Stock Analysis Options</c-card-header>
+      <c-card-body>
+        <table
+          [hover]="true"
+          [responsive]="true"
+          [striped]="true"
+          align="middle"
+          cTable
+          class="mb-0 border"
+        >
+          <tbody>
+          <tr>
+            <td>  
+              <div></div>
+            </td>
+            <td>
+              <div> Close Prices For A Given Period</div>
+              <div class="small text-medium-emphasis">
+                <span>Required Data: </span> Stock Symbol, Start Date, End Date
+              </div>
+            </td>
+            <td>
+              <button cButton color="primary" variant="outline" routerLinkActive="active" routerLink="/closeprice">Enter Inputs and Get Data</button>
+            </td>
+          </tr>
+          <tr>
+            <td>  
+              <div></div>
+            </td>
+            <td>
+              <div> Close Prices of Multiple Stocks</div>
+              <div class="small text-medium-emphasis">
+                <span>Required Data: </span> Stocks, Date
+              </div>
+            </td>
+            <td>
+              <button cButton color="primary" variant="outline" routerLinkActive="active" routerLink="/date">Enter Inputs and Get Data</button>
+            </td>
+          </tr>
+          <tr>
+            <td>  
+              <div></div>
+            </td>
+            <td>
+              <div> High Low Prices For A Period</div>
+              <div class="small text-medium-emphasis">
+                <span>Required Data: </span> Stock Symbol, Start Date, End Date
+              </div>
+            </td>
+            <td>
+              <button cButton color="primary" variant="outline" routerLinkActive="active" routerLink="/highlow">Enter Inputs and Get Data</button>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </c-card-body>
+    </c-card>
+  </c-col>
+</c-row>
