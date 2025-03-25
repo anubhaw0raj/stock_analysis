@@ -10,7 +10,8 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "deploy": "npm run build && npx angular-cli-ghpages --dir=dist/stock_analysis"
   },
   "private": true,
   "dependencies": {
