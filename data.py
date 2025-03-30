@@ -62,8 +62,8 @@ print(f"Total records: {len(data)}")
 
 # Database connection
 conn = psycopg2.connect(
-    dbname='localDb', user='postgres', password='anubhaw',
-    host='127.0.0.1', port='5432'
+    dbname='postgres', user='postgres.ughbgtesbumlnuztzafs', password='',
+    host='aws-0-ap-south-1.pooler.supabase.com', port='5432'
 )
 cur = conn.cursor()
 
@@ -97,3 +97,5 @@ psycopg2.extras.execute_values(cur, "INSERT INTO Stocks VALUES %s", vals)
 conn.commit()
 conn.close()
 print("Data inserted into database successfully!")
+
+
