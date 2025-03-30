@@ -1,16 +1,18 @@
-const express = require('express');
+import express from 'express';
+import cors from 'cors';
+import sql from './db.js';
+import dotenv from 'dotenv';
+
+dotenv.config();
+
 const app = express();
-const pool = require('./db');
-
-const cors = require('cors');
 app.use(cors());
-
 app.use(express.json());
 
 app.get('/stocks', async(req, res) => {
     try {
-        const stocks = await pool.query('SELECT * FROM Stocks');
-        res.json(stocks.rows);
+        const stocks = await sql`SELECT * FROM Stocks`;
+        res.json(stocks);
     } catch (err) {
         console.error(err.message);
     }
@@ -18,8 +20,8 @@ app.get('/stocks', async(req, res) => {
 
 app.get('/stocks/dates', async(req, res) => {
     try {
-        const dates = await pool.query('SELECT DISTINCT date FROM Stocks');
-        res.json(dates.rows);
+        const dates = await sql`SELECT DISTINCT date FROM Stocks`;
+        res.json(dates);
     } catch (err) {
         console.error(err.message);
     }
@@ -28,8 +30,8 @@ app.get('/stocks/dates', async(req, res) => {
 app.get('/stocks/:id/:startdate/:enddate', async(req, res) => {
     try {
         const { id, startdate, enddate } = req.params;
-        const stocks = await pool.query('SELECT * FROM Stocks WHERE Stocks.SYMBOL = $1 AND DATE(Stocks.DATE) BETWEEN $2 AND $3', [id, startdate, enddate]);
-        res.json(stocks.rows);
+        const stocks = await sql`SELECT * FROM Stocks WHERE Stocks.SYMBOL = ${id} AND DATE(Stocks.DATE) BETWEEN ${startdate} AND ${enddate}`;
+        res.json(stocks);
     } catch (err) {
         console.error(err.message);
     }
@@ -38,8 +40,8 @@ app.get('/stocks/:id/:startdate/:enddate', async(req, res) => {
 app.get('/stocks/:id/:date', async(req, res) => {
     try {
         const { id, date } = req.params;
-        const stocks = await pool.query('SELECT * FROM Stocks WHERE DATE(Stocks.DATE)=$1 AND Stocks.SYMBOL IN (SELECT unnest(string_to_array($2, $3)))', [date, id, ',']);
-        res.json(stocks.rows);
+        const stocks = await sql`SELECT * FROM Stocks WHERE DATE(Stocks.DATE)=${date} AND Stocks.SYMBOL IN (SELECT unnest(string_to_array(${id}, ',')))`;
+        res.json(stocks);
     } catch (err) {
         console.error(err.message);
     }
@@ -47,22 +49,22 @@ app.get('/stocks/:id/:date', async(req, res) => {
 
 app.get('/stocks/popular', async (req, res) => {
     try {
-        const query = `
+        const result = await sql`
             SELECT t.SYMBOL FROM 
                 (SELECT SYMBOL, SUM(TOTTRDQTY) AS total_traded_quantity
                 FROM Stocks
                 GROUP BY SYMBOL
                 ORDER BY total_traded_quantity DESC
-                LIMIT 10) as t;
+                LIMIT 10) as t
         `;
-        const result = await pool.query(query);
-        res.json(result.rows);
+        res.json(result);
     } catch (err) {
         console.error(err.message);
         res.status(500).send('Server Error');
     }
 });
 
-app.listen(3000, (req, res) => {
-    console.log('Node Server is running on port 3000');
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Node Server is running on port ${PORT}`);
 });

@@ -1,12 +1,9 @@
-const Pool = require('pg').Pool;
+import postgres from 'postgres';
+import dotenv from 'dotenv';
 
-// Change according to your database
-const pool = new Pool({
-    user: 'postgres',
-    host: 'localhost',
-    database: 'localDb',
-    password: 'anubhaw',
-    port: 5432,
-});
+dotenv.config();
 
-module.exports = pool;
+const connectionString = process.env.DATABASE_URL;
+const sql = postgres(connectionString);
+
+export default sql;
