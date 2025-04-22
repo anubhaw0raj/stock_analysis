@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { day } from '../../interfaces/stock';
+import { BACKEND_URL, day } from '../../interfaces/stock';
 
 @Component({
   templateUrl: 'dashboard.component.html',
@@ -20,7 +20,7 @@ export class DashboardComponent implements OnInit {
   }
 
   getDates() {
-    this.http.get<day[]>(`http://localhost:3000/stocks/dates`).subscribe(data => {
+    this.http.get<day[]>(`${BACKEND_URL}/stocks/dates`).subscribe(data => {
       this.dates = data.map((x: day) => x.date.split(' ')[0]);
       this.dates.sort();
       this.start_date = this.dates[0];

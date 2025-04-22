@@ -19,3 +19,5 @@ export interface day {
     date: string;
 }
 
+export const BACKEND_URL ="https://stock-analysis-gkb3ffggaja8e3bn.centralindia-01.azurewebsites.net";
+
