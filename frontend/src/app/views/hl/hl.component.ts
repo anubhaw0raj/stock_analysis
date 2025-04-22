@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BACKEND_URL, day, stock } from '../../interfaces/stock';
+import { day, stock } from '../../interfaces/stock';
 import { FormControl } from '@angular/forms';
+import { BACKEND_URL } from '../../interfaces/stock';;
 
 @Component({
   selector: 'app-hl',
@@ -25,31 +26,130 @@ export class HlComponent implements OnInit {
   startdate = new FormControl('');
   enddate = new FormControl('');
   data_arr: any[] = [];
-
   chartLineData = {
     labels: Array<string>(),
     datasets: [
       {
         label: '',
-        backgroundColor: 'rgba(220, 220, 220, 0.2)',
-        borderColor: 'rgba(0, 255, 0, 1)',
-        pointBackgroundColor: 'rgba(220, 220, 220, 1)',
-        pointBorderColor: 'rgba(150, 150, 150, 1)',
+        backgroundColor: (context: any) => {
+          const chart = context.chart;
+          const { ctx, chartArea } = chart;
+          if (!chartArea) return null;
+          
+          // Create gradient for high line (green)
+          const gradient = ctx.createLinearGradient(0, chartArea.bottom, 0, chartArea.top);
+          gradient.addColorStop(0, 'rgba(46, 184, 92, 0.05)');
+          gradient.addColorStop(1, 'rgba(46, 184, 92, 0.2)');
+          return gradient;
+        },
+        borderColor: 'rgba(46, 184, 92, 1)',
+        borderWidth: 3,
+        pointBackgroundColor: 'rgba(46, 184, 92, 1)',
+        pointBorderColor: '#fff',
+        pointRadius: 4,
+        pointHoverRadius: 7,
+        pointHoverBackgroundColor: '#fff',
+        pointHoverBorderColor: 'rgba(46, 184, 92, 1)',
+        pointHoverBorderWidth: 3,
+        tension: 0.4,
         data: Array<number>(),
+        fill: true
       },
       {
         label: '',
-        backgroundColor: 'rgba(220, 220, 220, 0.2)',
-        borderColor: 'rgba(255, 0, 0, 1)',
-        pointBackgroundColor: 'rgba(220, 220, 220, 1)',
-        pointBorderColor: 'rgba(150, 150, 150, 1)',
+        backgroundColor: (context: any) => {
+          const chart = context.chart;
+          const { ctx, chartArea } = chart;
+          if (!chartArea) return null;
+          
+          // Create gradient for low line (red)
+          const gradient = ctx.createLinearGradient(0, chartArea.bottom, 0, chartArea.top);
+          gradient.addColorStop(0, 'rgba(220, 53, 69, 0.05)');
+          gradient.addColorStop(1, 'rgba(220, 53, 69, 0.2)');
+          return gradient;
+        },
+        borderColor: 'rgba(220, 53, 69, 1)',
+        borderWidth: 3,
+        pointBackgroundColor: 'rgba(220, 53, 69, 1)',
+        pointBorderColor: '#fff',
+        pointRadius: 4,
+        pointHoverRadius: 7,
+        pointHoverBackgroundColor: '#fff',
+        pointHoverBorderColor: 'rgba(220, 53, 69, 1)',
+        pointHoverBorderWidth: 3,
+        tension: 0.4,
         data: Array<number>(),
+        fill: true
       }
     ]
   };
 
   chartLineOptions = {
     maintainAspectRatio: false,
+    responsive: true,
+    interaction: {
+      mode: 'index' as const,
+      intersect: false,
+    },
+    plugins: {
+      tooltip: {
+        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+        titleColor: '#fff',
+        bodyColor: '#fff',
+        titleFont: {
+          size: 14,
+          weight: 'bold',
+          family: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif"
+        },
+        bodyFont: {
+          size: 13,
+          family: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif"
+        },
+        padding: 12,
+        cornerRadius: 6,
+        displayColors: true,
+        usePointStyle: true
+      },
+      legend: {
+        labels: {
+          font: {
+            family: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
+            size: 14,
+            weight: 'bold'
+          },
+          color: 'rgb(70, 70, 70)',
+          usePointStyle: true
+        }
+      }
+    },
+    scales: {
+      x: {
+        grid: {
+          display: false,
+        },
+        ticks: {
+          color: 'rgb(100, 100, 100)',
+          font: {
+            family: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
+          }
+        }
+      },
+      y: {
+        grid: {
+          color: 'rgba(200, 200, 200, 0.2)',
+        },
+        ticks: {
+          color: 'rgb(100, 100, 100)',
+          font: {
+            family: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
+          }
+        }
+      }
+    },
+    animation: {
+      duration: 1200,
+      easing: 'easeOutCubic',
+    }
   };
   chartData: boolean = false;
 

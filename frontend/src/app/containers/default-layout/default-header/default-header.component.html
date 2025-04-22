@@ -1,34 +1,70 @@
 <ng-container>
-  <c-container [fluid]="true">
-    <c-header-nav class="d-none d-lg-flex me-auto">
+  <c-container [fluid]="true" class="tech-header-container">
+    <!-- Logo/Brand - Always visible -->
+    <c-header-nav class="me-auto">
       <c-nav-item>
-        <a cNavLink routerLink="/dashboard" routerLinkActive="active">
-          Stock Market Price Analysis App
+        <a cNavLink routerLink="/dashboard" routerLinkActive="active" class="brand-link">
+          <span class="app-title">Stock Market Analytics</span>
         </a>
       </c-nav-item>
     </c-header-nav>
 
+    <!-- Desktop Navigation - Only visible on large screens -->
     <c-header-nav class="d-none d-lg-flex">
       <c-nav-item>
-        <a cNavLink routerLink="/closeprice" routerLinkActive="active">
-          Close Prices For A Period
+        <a cNavLink routerLink="/closeprice" routerLinkActive="active" class="nav-tech-link">
+          <i class="cil-chart-line me-1"></i>
+          Close Prices
         </a>
       </c-nav-item>
       <c-nav-item>
-        <a cNavLink routerLink="/date" routerLinkActive="active">
-          Multiple Stocks For A Date
+        <a cNavLink routerLink="/date" routerLinkActive="active" class="nav-tech-link">
+          <i class="cil-money me-1"></i>
+          Multiple Stocks
         </a>
       </c-nav-item>
       <c-nav-item>
-        <a cNavLink routerLink="/highlow" routerLinkActive="active">
-          High Low For a Period
+        <a cNavLink routerLink="/highlow" routerLinkActive="active" class="nav-tech-link">
+          <i class="cil-graph me-1"></i>
+          High Low
         </a>
       </c-nav-item>
-    </c-header-nav>
-
+    </c-header-nav>    <!-- Mobile Toggle Button - Only visible on small screens -->
+    <button class="navbar-toggler d-lg-none" type="button" aria-label="Toggle navigation" (click)="toggleMobileNav()">
+      <div class="hamburger-icon">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </button>
   </c-container>
+
+  <!-- Mobile Navigation - Collapsible menu for small screens -->
+  <div class="mobile-nav" [class.show]="mobileNavVisible">
+    <c-container [fluid]="true" class="mobile-nav-container">
+      <c-nav-item>
+        <a cNavLink routerLink="/closeprice" routerLinkActive="active" class="nav-tech-link" (click)="toggleMobileNav()">
+          <i class="cil-chart-line me-1"></i>
+          Close Prices
+        </a>
+      </c-nav-item>
+      <c-nav-item>
+        <a cNavLink routerLink="/date" routerLinkActive="active" class="nav-tech-link" (click)="toggleMobileNav()">
+          <i class="cil-money me-1"></i>
+          Multiple Stocks
+        </a>
+      </c-nav-item>
+      <c-nav-item>
+        <a cNavLink routerLink="/highlow" routerLinkActive="active" class="nav-tech-link" (click)="toggleMobileNav()">
+          <i class="cil-graph me-1"></i>
+          High Low
+        </a>
+      </c-nav-item>
+    </c-container>
+  </div>
+
   <c-header-divider></c-header-divider>
-  <c-container [fluid]="true">
-    <c-breadcrumb-router class="ms-2"></c-breadcrumb-router>
+  <c-container [fluid]="true" class="tech-breadcrumb-container">
+    <c-breadcrumb-router class="ms-2 tech-breadcrumb"></c-breadcrumb-router>
   </c-container>
 </ng-container>

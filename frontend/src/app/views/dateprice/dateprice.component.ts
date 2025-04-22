@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BACKEND_URL, day, stock } from '../../interfaces/stock';
+import { day, stock } from '../../interfaces/stock';
 import { FormControl } from '@angular/forms';
+import { BACKEND_URL } from '../../interfaces/stock';
 
 @Component({
   selector: 'app-dateprice',
@@ -20,23 +21,103 @@ export class DatepriceComponent implements OnInit {
 
   not_data_sent: boolean = true;
   data_sent: boolean = false;
- 
-  chartLineData = {
+   chartLineData = {
     labels: [],
     datasets: [
       {
         label: '',
-        backgroundColor: 'rgba(220, 220, 220, 0.2)',
-        borderColor: 'rgba(100, 100, 100, 1)',
-        pointBackgroundColor: 'rgba(220, 220, 220, 1)',
-        pointBorderColor: 'rgba(150, 150, 150, 1)',
+        backgroundColor: (context: any) => {
+          const chart = context.chart;
+          const { ctx, chartArea } = chart;
+          if (!chartArea) return null;
+          
+          // Create gradient
+          const gradient = ctx.createLinearGradient(0, chartArea.bottom, 0, chartArea.top);
+          gradient.addColorStop(0, 'rgba(25, 118, 210, 0.1)');
+          gradient.addColorStop(1, 'rgba(25, 118, 210, 0.4)');
+          return gradient;
+        },
+        borderColor: 'rgba(25, 118, 210, 1)',
+        borderWidth: 3,
+        pointBackgroundColor: 'rgba(25, 118, 210, 1)',
+        pointBorderColor: '#fff',
+        pointRadius: 5,
+        pointHoverRadius: 7,
+        pointHoverBackgroundColor: '#fff',
+        pointHoverBorderColor: 'rgba(25, 118, 210, 1)',
+        pointHoverBorderWidth: 3,
+        tension: 0.4,
         data: Array<number>(),
+        fill: true
       }
     ]
   };
 
   chartLineOptions = {
     maintainAspectRatio: false,
+    responsive: true,
+    interaction: {
+      mode: 'index' as const,
+      intersect: false,
+    },
+    plugins: {
+      tooltip: {
+        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+        titleColor: '#fff',
+        bodyColor: '#fff',
+        titleFont: {
+          size: 14,
+          weight: 'bold',
+          family: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif"
+        },
+        bodyFont: {
+          size: 13,
+          family: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif"
+        },
+        padding: 12,
+        cornerRadius: 6,
+        displayColors: false,
+        usePointStyle: true
+      },
+      legend: {
+        labels: {
+          font: {
+            family: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
+            size: 14,
+            weight: 'bold'
+          },
+          color: 'rgb(70, 70, 70)',
+        }
+      }
+    },
+    scales: {
+      x: {
+        grid: {
+          display: false,
+        },
+        ticks: {
+          color: 'rgb(100, 100, 100)',
+          font: {
+            family: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
+          }
+        }
+      },
+      y: {
+        grid: {
+          color: 'rgba(200, 200, 200, 0.2)',
+        },
+        ticks: {
+          color: 'rgb(100, 100, 100)',
+          font: {
+            family: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
+          }
+        }
+      }
+    },
+    animation: {
+      duration: 1200,
+      easing: 'easeOutCubic',
+    }
   };
   chartData: boolean = false;
 

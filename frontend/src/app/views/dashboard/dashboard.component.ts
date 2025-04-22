@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BACKEND_URL, day } from '../../interfaces/stock';
+import { day } from '../../interfaces/stock';
+import { BACKEND_URL } from '../../interfaces/stock';
 
 @Component({
   templateUrl: 'dashboard.component.html',

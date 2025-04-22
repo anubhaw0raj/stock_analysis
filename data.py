@@ -8,25 +8,30 @@ import random
 
 # Argument Parser
 parser = argparse.ArgumentParser(description='NSE data downloader')
-parser.add_argument('--start', type=str, default='2021-01-01', help='Start date')
-parser.add_argument('--end', type=str, default='2021-01-10', help='End date')
+parser.add_argument('--start', type=str, help='Start date (optional)')
+parser.add_argument('--end', type=str, help='End date (optional)')
 args = parser.parse_args()
 
-# Generate date range
-dates = pd.date_range(start=args.start, end=args.end, freq='D')
+# Generate date range for last 30 days
+end_date = datetime.datetime.now().date()
+start_date = end_date - datetime.timedelta(days=29)  # 30 days including today
+# Use command line args if provided, otherwise use last 30 days
+start = args.start if args.start else start_date.strftime('%Y-%m-%d')
+end = args.end if args.end else end_date.strftime('%Y-%m-%d')
+dates = pd.date_range(start=start, end=end, freq='D')
 num_dates = len(dates)
 
-# Define stock symbols
-symbols = [f"STOCK{i}" for i in range(1, 101)]  # 100 unique stock symbols
+# Define popular Indian stock symbols
+symbols = ["RELIANCE", "TCS", "HDFCBANK", "INFY", "ICICIBANK", "HINDUNILVR", 
+           "BHARTIARTL", "BAJFINANCE", "SBIN", "KOTAKBANK", "LT", "AXISBANK",
+           "ASIANPAINT", "MARUTI", "WIPRO"]  # 15 popular Indian stocks
 num_symbols = len(symbols)
 
 # Calculate total records
 total_records = num_dates * num_symbols
 
-# Adjust number of symbols if total records exceed 500
-if total_records > 500:
-    num_symbols = 500 // num_dates
-    symbols = symbols[:num_symbols]
+# No longer limiting the number of symbols
+print(f"Generating data for {num_symbols} stocks over {num_dates} days ({total_records} records)")
 
 # Generate dummy data
 dummy_data = []
@@ -59,6 +64,7 @@ data = pd.DataFrame(dummy_data, columns=columns)
 # Print data summary
 print("Dummy data generated successfully")
 print(f"Total records: {len(data)}")
+
 
 # Database connection
 conn = psycopg2.connect(

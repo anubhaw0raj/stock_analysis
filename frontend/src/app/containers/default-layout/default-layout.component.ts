@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-dashboard',
-  templateUrl: './default-layout.component.html',
+  templateUrl: './default-layout.component.html'
 })
 export class DefaultLayoutComponent {
 
